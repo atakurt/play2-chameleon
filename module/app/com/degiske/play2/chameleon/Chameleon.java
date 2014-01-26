@@ -19,7 +19,7 @@ public abstract class Chameleon {
     {
         String key = getKey(className, params);
 
-        Logger.debug("{} - Trying to get render method for :{} with params: {}", self, className, params);
+        Logger.debug("{} - Trying to get render method for : {} with params: {}", self, className, params);
 
         if(!methodConcurrentHashMap.containsKey(key))
         {
@@ -28,6 +28,7 @@ public abstract class Chameleon {
                 Class clas = Play.application().classloader().loadClass(className);
                 Method renderMethod = null;
                 boolean allOk = true;
+
                 for(Method method : clas.getDeclaredMethods())
                 {
                     if(method.getName().equals("render"))
@@ -46,8 +47,15 @@ public abstract class Chameleon {
                             if(allOk)
                             {
                                 renderMethod = method;
-                                methodConcurrentHashMap.put(key, renderMethod);
-                                break;
+                                if(null != renderMethod)
+                                {
+                                    methodConcurrentHashMap.put(key, renderMethod);
+                                    break;
+                                }
+                                else
+                                {
+                                    throw new ThemeRenderMethodNotFoundException("render method can not be found for theme : " + className);
+                                }
                             }
 
                         }
@@ -60,29 +68,38 @@ public abstract class Chameleon {
                 }
                 else
                 {
-                    throw new ThemeRenderMethodNotFoundException("render method can not be found for theme " + className);
+                    throw new ThemeRenderMethodNotFoundException("render method can not be found for theme : " + className);
                 }
 
-            } catch (ClassNotFoundException e1) {
+            }
+            catch (ClassNotFoundException e1)
+            {
                 throw new ThemeRenderException(e1.getMessage(), e1);
-            } catch (InvocationTargetException e1) {
+            }
+            catch (InvocationTargetException e1)
+            {
                 throw new ThemeRenderException(e1.getMessage(), e1);
-            } catch (IllegalAccessException e1) {
+            }
+            catch (IllegalAccessException e1)
+            {
                 throw new ThemeRenderException(e1.getMessage(), e1);
             }
         }
         else
         {
             Method renderMethod = methodConcurrentHashMap.get(key);
-            Logger.debug("{} - Invoking method:{} from method cache", self, renderMethod.toGenericString());
+            Logger.debug("{} - Invoking method : {} from method cache", self, renderMethod.toGenericString());
 
-            try {
-
+            try
+            {
                 return (Content)renderMethod.invoke(null, params);
-
-            } catch (IllegalAccessException e) {
+            }
+            catch (IllegalAccessException e)
+            {
                 throw new ThemeRenderException(e.getMessage(), e);
-            } catch (InvocationTargetException e) {
+            }
+            catch (InvocationTargetException e)
+            {
                 throw new ThemeRenderException(e.getMessage(), e);
             }
         }
@@ -95,7 +112,7 @@ public abstract class Chameleon {
         stringBuilder.append("_");
         for(Object param : params)
         {
-            if(null !=param)
+            if(null != param)
             {
                 stringBuilder.append(param.getClass().toString());
                 stringBuilder.append("_");
