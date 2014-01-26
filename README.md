@@ -1,4 +1,4 @@
-# play2-chameleon - Runtime theme change module for Play 2 #
+# play2-chameleon - Runtime theme change module for Play Framework #
 
 
 Firstly, you need to add the chameleon repository to your build.sbt file so the chameleon jars can be resolved
