@@ -7,8 +7,16 @@ Firstly, you need to add the chameleon repository to your build.sbt file so the 
     url("http://atakurt.github.io/releases/"))(Resolver.ivyStylePatterns)
     
     
-  add the following to your Build.scala  
+add the following to your Build.scala  
   
-      libraryDependencies ++= Seq(
-      "com.degiske" %% "play2-chameleon" % "0.1"
-      )
+    libraryDependencies ++= Seq(
+    "com.degiske" %% "play2-chameleon" % "0.1"
+    )
+      
+Example usage :
+        
+    return ok(Chameleon.render("views.html."+ theme + ".index", new Object[]{"Your theme is " + theme}));
+
+        
+
+        
