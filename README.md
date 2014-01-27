@@ -1,7 +1,7 @@
 # play2-chameleon - Runtime theme change module for Play Framework #
 
 
-Firstly, you need to add the chameleon repository to your build.sbt file so the chameleon jars can be resolved
+Firstly, you need to add the chameleon repository to your build.sbt file so the chameleon jars can be resolved for play 2.2.x
 
     resolvers += Resolver.url("chameleon Play Snapshot Repository", 
     url("http://atakurt.github.io/releases/"))(Resolver.ivyStylePatterns)
