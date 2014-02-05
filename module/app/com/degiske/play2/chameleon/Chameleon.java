@@ -19,10 +19,9 @@ public abstract class Chameleon {
     {
         String key = getKey(className, params);
 
-        Logger.debug("{} - Trying to get render method for : {} with params: {}", self, className, params);
-
-        if(!methodConcurrentHashMap.containsKey(key))
+        if(Play.isDev() || !methodConcurrentHashMap.containsKey(key))
         {
+            Logger.debug("{} - Trying to get render method for : {} with params: {}", self, className, params);
             try
             {
                 Class clas = Play.application().classloader().loadClass(className);
